@@ -50,7 +50,7 @@
     {
       "name": "AccountManagement",
       "icon": "newspaper",
-      "openapi": "https://api.xpollens.com/swagger/docs/v1.1/AccountManagement",
+      "openapi": "https://api.xpollens.com/swagger/docs/v1.1/AccountManagement"
     }
   ],
   "navigation": [
