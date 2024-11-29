@@ -1,94 +1,209 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
+    "title": "Account management API",
+    "description": "This endpoints manages accounts,and their limits",
+    "contact": { },
+    "version": "v1.1"
   },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
   "paths": {
-    "/plants": {
+    "/api/v1.1/users/{userid}/additionalBalance": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "tags": [
+          "AccountAdditionalBalance"
+        ],
+        "summary": "Get an additional balance",
+        "description": "Get an additional balance for a given user id",
+        "operationId": "GetUserAdditionalBalance",
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
+            "name": "userid",
+            "in": "path",
+            "description": "User partner reference",
+            "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string"
+            }
+          },
+          {
+            "name": "CorrId",
+            "in": "header",
+            "description": "Correlation Id",
+            "schema": {
+              "type": "String",
+              "default": "1272df6f-bae6-40ed-b9a5-79c50f5d6a8a"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
+          "404": {
+            "description": "Not Found"
           },
-          "400": {
-            "description": "Unexpected error",
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/AccountAdditionalBalanceDto"
                 }
               }
             }
           }
         }
       },
-      "post": {
-        "description": "Creates a new plant in the store",
+      "put": {
+        "tags": [
+          "AccountAdditionalBalance"
+        ],
+        "summary": "Modify an additional balance",
+        "description": "Update an additional balance for a given user id",
+        "operationId": "UpdateUserAdditionalBalance",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "User partner reference",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "CorrId",
+            "in": "header",
+            "description": "Correlation Id",
+            "schema": {
+              "type": "String",
+              "default": "6d4ac677-572d-4285-92bb-18627a4676ed"
+            }
+          }
+        ],
         "requestBody": {
-          "description": "Plant to add to the store",
+          "description": "Additional balance new values",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/UpdateAccountAdditionalBalanceDto"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.1/users/{userid}/limits": {
+      "put": {
+        "tags": [
+          "AccountLimits"
+        ],
+        "summary": "Update account limits",
+        "description": "Update account limits for the given user id",
+        "operationId": "UpdateAccountLimits",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "User partner reference",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "CorrId",
+            "in": "header",
+            "description": "Correlation Id",
+            "schema": {
+              "type": "String",
+              "default": "9ff98ada-3b77-4c9b-a87a-f6c525f14639"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request with new limit values",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LimitDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Server Error"
+          },
           "200": {
-            "description": "plant response",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
+                  "$ref": "#/components/schemas/LimitDto"
                 }
               }
             }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "AccountLimits"
+        ],
+        "summary": "Get account limits",
+        "description": "Get account limits for the given user id",
+        "operationId": "GetAccountLimits",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "User partner reference",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           },
+          {
+            "name": "CorrId",
+            "in": "header",
+            "description": "Correlation Id",
+            "schema": {
+              "type": "String",
+              "default": "c0c4da45-35e8-4027-aa6c-b7fa409f02ab"
+            }
+          }
+        ],
+        "responses": {
           "400": {
-            "description": "unexpected error",
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/LimitDto"
                 }
               }
             }
@@ -96,35 +211,278 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/api/v1.1/clientdebts/{orderid}/status": {
+      "put": {
+        "tags": [
+          "Debt"
+        ],
+        "summary": "Modify a debt recovery status",
+        "description": "This API allows the partner to modify debt recovery status.",
+        "operationId": "UpdateDebtRecoveryStatus",
         "parameters": [
           {
-            "name": "id",
+            "name": "orderid",
             "in": "path",
-            "description": "ID of plant to delete",
+            "description": "Debt partner reference",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
+            }
+          },
+          {
+            "name": "CorrId",
+            "in": "header",
+            "description": "Correlation Id",
+            "schema": {
+              "type": "String",
+              "default": "66e36e00-724e-4308-8f15-851006f15aff"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request with recoveryStatus and remainingAmount debt",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientDebtStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Resource not found"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "200": {
+            "description": "Returns the requested debt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientDebtDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Resource is forbidden for the partner"
+          }
+        }
+      }
+    },
+    "/api/v1.1/clientdebts/{orderid}/remainingdebtamount": {
+      "put": {
+        "tags": [
+          "Debt"
+        ],
+        "summary": "Modify a debt remaining amount",
+        "description": "This API allows the partner to modify the remaining amount of a debt.",
+        "operationId": "UpdateRemainingDebtAmount",
+        "parameters": [
+          {
+            "name": "orderid",
+            "in": "path",
+            "description": "Debt partner reference",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "CorrId",
+            "in": "header",
+            "description": "Correlation Id",
+            "schema": {
+              "type": "String",
+              "default": "584105dd-52bd-4155-991c-0710e8fba546"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request with remainingAmount debt",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemainingDebtAmountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Resource not found"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "200": {
+            "description": "Returns the requested debt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientDebtDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Resource is forbidden for the partner"
+          }
+        }
+      }
+    },
+    "/api/v1.1/clientdebts/{orderid}": {
+      "get": {
+        "tags": [
+          "Debt"
+        ],
+        "summary": "Get a debt by a debt public Id",
+        "description": "This API allows the partner to consult a partner debt in particular.<br />\r\nA debt is the consequence of the partner's profit and loss account covering a payment that Xpollens cannot refuse on a client account that has an insufficient balance (example: Offline card payment, R-transactions, Card/TopUp Disputes).<br />\r\nRegulations do not allow Xpollens to hold accounts with a negative balance.",
+        "operationId": "GetClientDebtsByOrderId",
+        "parameters": [
+          {
+            "name": "orderid",
+            "in": "path",
+            "description": "Debt partner reference",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "CorrId",
+            "in": "header",
+            "description": "Correlation Id",
+            "schema": {
+              "type": "String",
+              "default": "0a1365a8-7ac4-4f50-9ffb-dbd5351d158b"
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
+          "404": {
+            "description": "Resource not found"
           },
-          "400": {
-            "description": "unexpected error",
+          "500": {
+            "description": "Internal server error"
+          },
+          "200": {
+            "description": "Returns the requested debt",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ClientDebtDto"
                 }
               }
             }
+          },
+          "403": {
+            "description": "Resource is forbidden for the partner"
+          }
+        }
+      }
+    },
+    "/api/v1.1/clientdebts": {
+      "get": {
+        "tags": [
+          "Debt"
+        ],
+        "summary": "Get a partial list of debts",
+        "description": "This API allows the partner to consult partner's debts list.<br />\r\nA debt is the consequence of the partner's profit and loss account covering a payment that Xpollens cannot refuse on a client account that has an insufficient balance (example: Offline card payment, R-transactions, Card/TopUp Disputes).<br />\r\nRegulations do not allow Xpollens to hold accounts with a negative balance.",
+        "operationId": "GetClientDebts",
+        "parameters": [
+          {
+            "name": "AppUserId",
+            "in": "query",
+            "description": "User identifier of partner",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Status",
+            "in": "query",
+            "description": "Client debt status\r\n<details><summary> Client debt status referential </summary>\r\n            \r\n| Value | Description                                 |\r\n|-------|---------------------------------------------|\r\n| 0     | The debt has not been recovered             |\r\n| 1     | The debt has been recovered                 |\r\n| 2     | The debt has been closed without recovery   |\r\n            \r\n</details>",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "description": "Page filter",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PerPage",
+            "in": "query",
+            "description": "Number of items by page",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageIndex",
+            "in": "query",
+            "description": "Page index",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Direction",
+            "in": "query",
+            "description": "Search direction",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "CorrId",
+            "in": "header",
+            "description": "Correlation Id",
+            "schema": {
+              "type": "String",
+              "default": "966f0fd1-4b6f-4d37-8f29-9b55fe30bbec"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Resource not found"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientDebtsDto"
+                }
+              }
+            }
+          },
+          "206": {
+            "description": "Returns the partial content of requested debts"
           }
         }
       }
@@ -132,64 +490,256 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "AccountAdditionalBalanceDto": {
         "type": "object",
         "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+          "AdditionalBalanceAmount": {
+            "type": "number",
+            "description": "A numeric value representing the additional balance amount.",
+            "format": "double"
           }
-        }
+        },
+        "additionalProperties": false,
+        "description": "A data transfer object (DTO) representing the additional balance associated with an account."
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+      "ClientDebtDto": {
         "type": "object",
         "properties": {
-          "error": {
+          "OrderId": {
+            "type": "string",
+            "description": "Payment identifier in the third-party application\r\n<details><summary> Payment identifier in the third-party application and specified by the partner </summary>\r\n\r\n| Parameter| Type   |Format  |Example    |Description                                       |\r\n|----------|--------|--------|-----------|--------------------------------------------------|\r\n| OrderId  | String |X(255)  |Moneyout-1 |Payment identifier in the third-party application |\r\n\r\n</details>"
+          },
+          "AppUserId": {
+            "type": "string",
+            "description": "User identifier of partner"
+          },
+          "Date": {
+            "type": "string",
+            "description": "Client debt's creation date",
+            "format": "date-time"
+          },
+          "DebtAmount": {
             "type": "integer",
+            "description": "Initial client debt amount (in cents)",
+            "format": "int64"
+          },
+          "RemainingDebtAmount": {
+            "type": "integer",
+            "description": "Remaining client Debt amount (in cents)",
+            "format": "int64"
+          },
+          "Status": {
+            "type": "integer",
+            "description": "Client debt status\r\n<details><summary> Client debt status referential  </summary>\r\n\r\n| Value                       | Description                                 |\r\n|-----------------------------|---------------------------------------------|\r\n| 0 (InProgress)              | The debt has not been recovered             |\r\n| 1 (ClosedWithRecovery)      | The debt has been recovered                 |\r\n| 2 (ClosedWithoutRecovery)   | The debt has been closed without recovery   |\r\n\r\n</details>",
             "format": "int32"
           },
-          "message": {
-            "type": "string"
+          "Reason": {
+            "type": "string",
+            "description": "Client debt reason\r\n<details><summary> Client debt reason referential </summary>\r\n\r\n| Value         | Description                                                        |\r\n|---------------|--------------------------------------------------------------------|\r\n| P2P           | The original transaction related to the debt is a P2P              |\r\n| Cardoperation | The original transaction related to the debt is a Card Operation   |\r\n| JRI           | The original transaction related to the debt is a top-up CB unpaid |\r\n\r\n</details>"
           }
-        }
+        },
+        "additionalProperties": false,
+        "description": "A data transfer object (DTO) representing the details of a client's debt."
+      },
+      "ClientDebtStatusDto": {
+        "required": [
+          "Status"
+        ],
+        "type": "object",
+        "properties": {
+          "Status": {
+            "type": "integer",
+            "description": "Client debt status\r\n<details><summary> Client debt status referential  </summary>\r\n\r\n| Value                       | Description                                 |\r\n|-----------------------------|---------------------------------------------|\r\n| 0 (InProgress)              | The debt has not been recovered             |\r\n| 1 (ClosedWithRecovery)      | The debt has been recovered                 |\r\n| 2 (ClosedWithoutRecovery)   | The debt has been closed without recovery   |\r\n\r\n</details>",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "A data transfer object (DTO) that represents the current status of a client's debt."
+      },
+      "ClientDebtsDto": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClientDebtDto"
+            },
+            "description": "An array of ClientDebtDto objects, each representing a detailed record of a client's debt."
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkDto"
+            },
+            "description": "An array of LinkDto objects, providing navigation or related links for additional resources or actions related to the client debts."
+          }
+        },
+        "additionalProperties": false,
+        "description": "A data transfer object (DTO) representing a collection of client debts along with associated links."
+      },
+      "GlobalLimitDto": {
+        "type": "object",
+        "properties": {
+          "AnnualAllowance": {
+            "type": "integer",
+            "description": "Authorized annual amount (in cents)",
+            "format": "int64",
+            "nullable": true
+          },
+          "UsedAllowance": {
+            "type": "integer",
+            "description": "Annual amount used (in cents)",
+            "format": "int64"
+          },
+          "RenewalDate": {
+            "type": "string",
+            "description": "Reset date of the annual amount used",
+            "format": "date-time",
+            "nullable": true
+          },
+          "MonthlyAllowance": {
+            "type": "integer",
+            "description": "Authorized Monthly amount (in cents)",
+            "format": "int64",
+            "nullable": true
+          },
+          "MonthlyUsedAllowance": {
+            "type": "integer",
+            "description": "Monthly amount used (in cents)",
+            "format": "int64"
+          },
+          "MonthlyRenewalDate": {
+            "type": "string",
+            "description": "Reset date of the monthly amount used",
+            "format": "date-time",
+            "nullable": true
+          },
+          "WeeklyAllowance": {
+            "type": "integer",
+            "description": "Authorized Weekly amount (in cents)",
+            "format": "int64",
+            "nullable": true
+          },
+          "WeeklyUsedAllowance": {
+            "type": "integer",
+            "description": "Weekly amount used (in cents)",
+            "format": "int64"
+          },
+          "WeeklyRenewalDate": {
+            "type": "string",
+            "description": "Reset date of the weekly amount used",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "A data transfer object (DTO) representing global financial limits for an account over different time periods (annual, monthly, weekly)."
+      },
+      "LimitDto": {
+        "type": "object",
+        "properties": {
+          "GlobalIn": {
+            "$ref": "#/components/schemas/GlobalLimitDto"
+          },
+          "GlobalOut": {
+            "$ref": "#/components/schemas/GlobalLimitDto"
+          },
+          "BalanceLimit": {
+            "type": "integer",
+            "description": "Authorized account balance limit (in cents)",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "A data transfer object (DTO) representing various financial limits applied to an account."
+      },
+      "LinkDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "A string representing the URL of the link."
+          },
+          "relation": {
+            "type": "string",
+            "description": "A string describing the relationship of the link to the current resource (e.g., \"self\", \"next\", \"related\")."
+          }
+        },
+        "additionalProperties": false,
+        "description": "A data transfer object (DTO) representing a hyperlink and its relationship to the current resource."
+      },
+      "RemainingDebtAmountDto": {
+        "required": [
+          "RemainingDebtAmount"
+        ],
+        "type": "object",
+        "properties": {
+          "RemainingDebtAmount": {
+            "type": "integer",
+            "description": "Remaining client Debt amount (in cents)",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false,
+        "description": "A data transfer object (DTO) representing the remaining amount of debt for a client."
+      },
+      "UpdateAccountAdditionalBalanceDto": {
+        "required": [
+          "AdditionalBalanceAmount"
+        ],
+        "type": "object",
+        "properties": {
+          "AdditionalBalanceAmount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
       }
     },
     "securitySchemes": {
-      "bearerAuth": {
+      "Bearer token authorization": {
         "type": "http",
+        "description": "Authentication with bearer token",
         "scheme": "bearer"
+      },
+      "Sts authentication": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://connect.xpollens.com/connect/token",
+            "scopes": {
+              "partner": "",
+              "internal_settings": "",
+              "thirdparty_kyc": "",
+              "mobile_app": ""
+            }
+          }
+        }
       }
     }
-  }
+  },
+  "security": [
+    {
+      "Bearer token authorization": [ ]
+    },
+    {
+      "Sts authentication": [ ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "AccountAdditionalBalance",
+      "description": "Endpoints for handling account additional balance"
+    },
+    {
+      "name": "AccountLimits",
+      "description": "Endpoints for handling account limits"
+    },
+    {
+      "name": "Debt",
+      "description": "Endpoints for handling debt"
+    }
+  ]
 }

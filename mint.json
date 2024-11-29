@@ -46,11 +46,6 @@
       "name": "Blog",
       "icon": "newspaper",
       "url": "https://mintlify.com/blog"
-    },
-    {
-      "name": "AccountManagement",
-      "icon": "newspaper",
-      "openapi": "https://api.xpollens.com/swagger/docs/v1.1/AccountManagement"
     }
   ],
   "navigation": [
