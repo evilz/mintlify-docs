@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate mint.json is valid JSON
+        run: jq empty mint.json
+
+      - name: Validate navigation pages exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          repo = Path('.')
+          data = json.loads((repo / 'mint.json').read_text(encoding='utf-8'))
+
+          missing = []
+          for section in data.get('navigation', []):
+              for page in section.get('pages', []):
+                  # Mintlify pages are typically .mdx paths without extension.
+                  page_path = repo / (page + '.mdx')
+                  if not page_path.exists():
+                      missing.append(str(page_path))
+
+          if missing:
+              msg = 'Missing documentation pages referenced by mint.json navigation:\n' + '\n'.join(f'- {p}' for p in missing)
+              raise SystemExit(msg)
+
+          print('OK: all navigation pages exist')
+          PY
