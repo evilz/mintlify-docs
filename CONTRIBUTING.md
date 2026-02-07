@@ -3,8 +3,9 @@
 Merci pour votre intérêt !
 
 ## Comment contribuer
+- Avant de commencer, configurez votre environnement de développement en suivant les [instructions du README.md](./README.md#development).
 - Forkez le dépôt et créez une branche dédiée.
-- Faites des changements ciblés et testez-les si possible.
+- Faites des changements ciblés et testez-les.
 - Ouvrez une PR claire et concise.
 
 ## Style
